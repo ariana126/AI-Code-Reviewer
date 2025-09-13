@@ -14,16 +14,14 @@ class N8nSDK(Encapsulated, Immutable):
         response = requests.post(f"{self.__base_url}/{path}", json=body)
         if response.status_code != requests.codes.ok:
             # TODO: Make custom error classes
-            raise RuntimeError('Failed to post webhook', response.json())
+            raise RuntimeError('N8n Failed.', response.json())
         return response.json()
 
 class N8nClient(N8nClientInterface, Encapsulated, Immutable):
-    def __init__(self, sdk: N8nSDK, code_reviewer_webhook_path: str, default_version: str= 'v1'):
+    def __init__(self, sdk: N8nSDK, code_reviewer_webhook_path: str):
         self.__sdk = sdk
         self.__code_reviewer_webhook_path = code_reviewer_webhook_path
-        self.__default_version = default_version
 
-    def request_review(self, data: dict[str, Any], version: str|None=None) -> dict[str, Any]:
-        if version is None:
-            version = self.__default_version
-        return self.__sdk.post_webhook(f'{self.__code_reviewer_webhook_path}/{version}', data)
+    # TODO: Make response classes
+    def request_review(self, data: dict[str, Any]) -> dict[str, Any]:
+        return self.__sdk.post_webhook(self.__code_reviewer_webhook_path, data)

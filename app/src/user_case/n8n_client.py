@@ -4,5 +4,5 @@ from typing import Any
 
 class N8nClientInterface(ABC):
     @abstractmethod
-    def request_review(self, data: dict[str, Any], version: str|None) -> dict[str, Any]:
+    def request_review(self, data: dict[str, Any]) -> dict[str, Any]:
         pass
