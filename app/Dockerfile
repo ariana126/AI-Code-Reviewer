@@ -9,5 +9,6 @@ RUN  pip install -r requirements.txt
 
 COPY . .
 
+ENV PYTHONPATH=/
 EXPOSE 8080
 CMD ["python", "src/infrastructure/http/server.py"]

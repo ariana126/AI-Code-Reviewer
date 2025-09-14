@@ -39,7 +39,7 @@ class OpenAIConfig(LLMmodelProviderConfig, ValueObject):
             raise ValueError(f'"{cls.__API_KEY_KEY}" is missing.')
         if cls.__BASE_URL_KEY not in data:
             raise ValueError(f'"{cls.__BASE_URL_KEY}" is missing.')
-        return cls(data[cls.__API_KEY], data[cls.__BASE_URL_KEY])
+        return cls(data[cls.__API_KEY_KEY], data[cls.__BASE_URL_KEY])
 
     def to_json(self) -> dict[str, Any]:
         return {

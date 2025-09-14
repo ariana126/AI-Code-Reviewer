@@ -1,2 +1,3 @@
 git+https://github.com/ariana126/Python-DDD-Infrastructure.git@main#egg=ddd
 requests
+python-dotenv
