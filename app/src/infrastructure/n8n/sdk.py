@@ -1,11 +1,12 @@
 from typing import Any
 import requests
-from ddd.framework.encapsulation import Encapsulated
-from ddd.framework.mutability import Immutable
-from app.src.user_case.n8n_client import N8nClientInterface
+from ddd.framework.service import ServiceClass
+from app.src.domain.review.request import ReviewRequest
+from app.src.domain.review.result import ReviewResult
+from app.src.domain.review.service.n8n_client import N8nClientInterface
 
 
-class N8nSDK(Encapsulated, Immutable):
+class N8nSDK(ServiceClass):
     # TODO: Implement authentication
     def __init__(self, base_url: str) -> None:
         self.__base_url = base_url
@@ -17,11 +18,11 @@ class N8nSDK(Encapsulated, Immutable):
             raise RuntimeError('N8n Failed.', response.json())
         return response.json()
 
-class N8nClient(N8nClientInterface, Encapsulated, Immutable):
+class N8nClient(N8nClientInterface, ServiceClass):
     def __init__(self, sdk: N8nSDK, code_reviewer_webhook_path: str):
         self.__sdk = sdk
         self.__code_reviewer_webhook_path = code_reviewer_webhook_path
 
-    # TODO: Make response classes
-    def request_review(self, data: dict[str, Any]) -> dict[str, Any]:
-        return self.__sdk.post_webhook(self.__code_reviewer_webhook_path, data)
+    def request_review(self, request: ReviewRequest) -> ReviewResult:
+        n8n_response = self.__sdk.post_webhook(self.__code_reviewer_webhook_path, request.to_json())
+        return ReviewResult.from_json(n8n_response)
