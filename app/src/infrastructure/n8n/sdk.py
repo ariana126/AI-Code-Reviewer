@@ -1,6 +1,6 @@
 from typing import Any
 import requests
-from ddd.framework.service import ServiceClass
+from underpy import ServiceClass
 from app.src.domain.review.request import ReviewRequest
 from app.src.domain.review.result import ReviewResult
 from app.src.domain.review.service.n8n_client import N8nClientInterface

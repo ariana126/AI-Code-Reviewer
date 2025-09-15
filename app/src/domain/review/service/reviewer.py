@@ -1,7 +1,7 @@
-from ddd.framework.service import ServiceClass
 from app.src.domain.review.result import ReviewResult
 from app.src.domain.review.review import Review
 from app.src.domain.review.service.n8n_client import N8nClientInterface
+from underpy import ServiceClass
 
 
 class Reviewer(ServiceClass):
