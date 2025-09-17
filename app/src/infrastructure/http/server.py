@@ -1,3 +1,5 @@
+from app.src.infrastructure.boot import boot
+from pydm import ServiceContainer
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import json
 import os
@@ -7,20 +9,8 @@ from app.src.domain.review.service.reviewer import Reviewer
 from app.src.infrastructure.n8n.sdk import N8nClient, N8nSDK
 from app.src.user_case.on_demand_review import ReviewOnDemandCommandHandler, ReviewOnDemandCommand
 
-# TODO: Make use of service registry
-load_dotenv()
-N8n_BASE_URL = os.getenv("N8N_BASE_URL")
-N8N_CODE_REVIEWER_WEBHOOK_PATH: str = os.getenv("N8N_CODE_REVIEWER_WEBHOOK_PATH")
-
 
 class SimpleHandler(BaseHTTPRequestHandler):
-    # TODO: Make use of service registry
-    def get_command_handler(self) -> ReviewOnDemandCommandHandler:
-        n8n_sdk: N8nSDK = N8nSDK(N8n_BASE_URL)
-        n8n_client: N8nClient = N8nClient(n8n_sdk, N8N_CODE_REVIEWER_WEBHOOK_PATH)
-        reviewer: Reviewer = Reviewer(n8n_client)
-        return ReviewOnDemandCommandHandler(reviewer)
-
     def do_POST(self):
         # Route handling
         if self.path != "/on-demand-review":
@@ -35,7 +25,7 @@ class SimpleHandler(BaseHTTPRequestHandler):
         post_data = self.rfile.read(content_length)
 
         try:
-            command_handler: ReviewOnDemandCommandHandler = self.get_command_handler()
+            command_handler: ReviewOnDemandCommandHandler = ServiceContainer.get_instance().get_service(ReviewOnDemandCommandHandler)
 
             # Parse JSON payload
             data = json.loads(post_data.decode('utf-8'))
@@ -67,6 +57,7 @@ class SimpleHandler(BaseHTTPRequestHandler):
 
 def main():
     print("Starting HTTP POST server on port 8080 at /on-demand-review")
+    boot()
     server = HTTPServer(('0.0.0.0', 8080), SimpleHandler)
     server.serve_forever()
 

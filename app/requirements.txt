@@ -1,3 +1,4 @@
 dddx
-requests
+pydmpro
 python-dotenv
+requests
