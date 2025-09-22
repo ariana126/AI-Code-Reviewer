@@ -2,3 +2,5 @@ dddx
 pydmpro
 python-dotenv
 requests
+fastapi
+uvicorn
