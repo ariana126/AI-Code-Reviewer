@@ -1,6 +1,10 @@
+underpyx
 dddx
 pydmpro
 python-dotenv
 requests
 fastapi
 uvicorn
+pymongo
+pytest
+assertpy

@@ -20,17 +20,18 @@ services:
 
   app:
     build:
-      context: ./app
+      context: .
       dockerfile: Dockerfile
     restart: always
     depends_on:
-      - n8n
       - mongo
     ports:
       - "8080:8080"
+    env_file:
+      - .env
     volumes:
-      - ./app:/app
-      - ./.env:/app/.env
+      - ./src:/app/src
+      - ./.env:/app/.env:ro
     networks:
       - secure_backend
 
