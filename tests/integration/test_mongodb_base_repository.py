@@ -59,4 +59,4 @@ def test_repository_rais_error_if_it_is_requested_to_get_something_tha_has_not_s
     # assert
     with pytest.raises(RuntimeError):
         # act
-        sut.get(Identity('not-existed-id'))
+        sut.get(Identity('dummy-id'))

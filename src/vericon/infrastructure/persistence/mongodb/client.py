@@ -10,3 +10,7 @@ class MongoDBClient(Encapsulated, Immutable):
 
     def get_collection(self, name: str) -> Collection:
         return self.__db[name]
+
+    def clear_all_collections(self) -> None:
+        for name in self.__db.list_collection_names():
+            self.__db[name].delete_many({})
